@@ -1,0 +1,4 @@
+imprimare
+scanare
+plotare
+xerox

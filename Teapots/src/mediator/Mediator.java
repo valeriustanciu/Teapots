@@ -1,20 +1,12 @@
 package mediator;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
-import web.IWeb;
-import gui.Gui;
 import gui.IGui;
 import network.INetwork;
+import network.Network;
+import web.IWeb;
+import web.Web;
 
 
 
@@ -24,7 +16,8 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 	private IWeb web;
 	
 	public Mediator() {
-		
+		web = new Web(this);
+		network = new Network(this);
 	}
 	
 	
@@ -33,33 +26,10 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 	}
 	
 	public String getUserType (String user, String pass) {
-		try {
-			File configFile = new File("config.txt");
-			
-			FileInputStream fstream = new FileInputStream(configFile);
-			// Get the object of DataInputStream
-			DataInputStream in = new DataInputStream(fstream);
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			String strLine;
-			
-			//Read File Line By Line
-			while ((strLine = br.readLine()) != null)   {
-			     StringTokenizer st = new StringTokenizer(strLine);
-			     String username = st.nextToken();
-			     String password = st.nextToken();
-			     String type = st.nextToken();
-			     
-			     if (username.equals(user) && password.equals(pass)) {
-			    	 return type;
-			     }
-			}
-			in.close();
-		}
-		catch (Exception e) {
-			JOptionPane.showMessageDialog(
-					null, "Error " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		return null;
+		return web.getUserType(user, pass);
+	}
+	
+	public ArrayList<String> getUserServices (String user) {
+		return web.getUserServices(user);
 	}
 }
