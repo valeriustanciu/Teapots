@@ -100,6 +100,14 @@ public class Gui extends JPanel implements IGui{
 		JLabel userNameAndType = new JLabel(userName + ", " + userType, JLabel.CENTER);
 		topPanel.add(userNameAndType);
 		topPanel.add(logoutButton);
+		logoutButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO: verificare stare servicii!!!
+				
+				System.exit(0);
+			}
+		});
 		
 		String[] columnNames = new String[]{"Service", "Status", "Users", "Progress"};
 		for(int i = 0; i < columnNames.length; i++) {
