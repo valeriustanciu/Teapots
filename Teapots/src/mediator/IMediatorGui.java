@@ -18,5 +18,5 @@ public interface IMediatorGui {
 	public void dropAuction (String localUser, String remoteUser, String service);
 	public void acceptOffer (String localUser, String remoteUser, String service);
 	public void refuseOffer (String localUser, String remoteUser, String service);
-	
+	public void userLoggedOut (String username);
 }

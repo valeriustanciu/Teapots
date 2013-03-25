@@ -49,7 +49,18 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		test.add("Cici");
 		test.add("Caca");
 		test.add("Coco");
-		this.gui.populateServiceUserList("scaun", test);
+		if (service.equals("canapea"))
+			this.gui.populateServiceUserList(service, test);
+		
+		ArrayList<String> test2 = new ArrayList<String>();
+		test2.add("Gigi");
+		test2.add("Gaga");
+		test2.add("Gogo");
+		
+		if (service.equals("scaun"))
+			this.gui.populateServiceUserList(service, test2);
+		
+//		this.gui.sellerMadeOffer("Caca", "scaun");
 		// 
 	}
 	
@@ -73,6 +84,7 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		// se trimite pe network catre buyerul respectiv
 		
 		this.gui.makeOffer(remoteUser, service);		
+		this.gui.sellerMadeOffer(remoteUser, service);
 	}
 	
 	public void dropAuction(String localUser, String remoteUser, String service) {
@@ -80,6 +92,11 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		// se trimite pe network catre buyerul respectiv
 		
 		this.gui.dropAuction(remoteUser, service);
+	}
+	
+	public void userLoggedOut (String username) {
+		// notifica userii ca username s-a delogat
+		this.gui.userLoggedOut(username);
 	}
 	
 }

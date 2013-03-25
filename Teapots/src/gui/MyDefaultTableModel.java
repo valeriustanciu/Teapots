@@ -1,5 +1,7 @@
 package gui;
 
+import javax.swing.JComboBox;
+import javax.swing.JProgressBar;
 import javax.swing.table.DefaultTableModel;
 
 public class MyDefaultTableModel extends DefaultTableModel {
@@ -10,4 +12,5 @@ public class MyDefaultTableModel extends DefaultTableModel {
 			return false;
 		return true;
 	}
+	
 }

@@ -37,6 +37,10 @@ public class ServiceUserStatus {
 		return this.service;
 	}
 	
+	public ArrayList<Pair<String, String>> getList () {
+		return this.userStatus;
+	}
+	
 	public void addUser (String user, String status) {
 		Pair<String, String> p = new Pair<String, String>(user, status);
 		this.userStatus.add(p);
@@ -66,6 +70,10 @@ public class ServiceUserStatus {
 				return this.userStatus.get(i).getStatus();
 			}
 		}
-		return "";
+		return null;
+	}
+	
+	public int getSize() {
+		return this.userStatus.size();
 	}
 }

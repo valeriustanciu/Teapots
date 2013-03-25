@@ -2,6 +2,7 @@ package gui;
 
 import java.util.ArrayList;
 
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 
 import mediator.IMediatorGui;
@@ -20,9 +21,16 @@ public interface IGui {
 	public void removeServiceUserList (String service);
 	public void acceptOffer (String remoteUser, String service);
 	public void refuseOffer (String remoteUser, String service);
+	public void sellerMadeOffer (String remoteUser, String service);
 	
 	// metode pt seller
-//	public void userActivatedService (String remoteUser, String service);
+	public void userActivatedService (String remoteUser, String service);
+	public void userDeactivatedService (String remoteUser, String service);
 	public void makeOffer (String remoteUser, String service);
 	public void dropAuction (String remoteUser, String service);
+	public void startTransfer (String remoteUser, String service);
+	public void buyerRefusedOffer (String remoteUser, String service);
+	public void buyerAcceptedOffer (String remoteUser, String service);
+	
+	public void userLoggedOut (String username);
 }
