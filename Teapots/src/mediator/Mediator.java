@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gui.IGui;
 import network.INetwork;
+import network.MockNetwork;
 import network.Network;
 import web.IWeb;
 import web.Web;
@@ -17,7 +18,7 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 	
 	public Mediator() {
 		web = new Web(this);
-		network = new Network(this);
+		network = new MockNetwork(this);
 	}
 	
 	
@@ -32,12 +33,7 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 	public ArrayList<String> getUserServices (String user) {
 		return web.getUserServices(user);
 	}
-
-
-	public void changeState(String newState) {
-		// modifica starea 
-		
-	}
+	
 	
 	public void addService (String user, String service) {
 		// apelam in cazul Launch offer request => o sa fie notificati userii care ofera serviciul
@@ -62,29 +58,38 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		
 //		this.gui.sellerMadeOffer("Caca", "scaun");
 		// 
+		
+		this.network.addService(user, service);
 	}
 	
 	public void removeService (String user, String service) {
 		// apelam in cazul Drop offer request
 		// buyerul dispare din comboboxurile sellerilor care ofera serviciul
 		this.gui.removeServiceUserList(service);
+		this.network.removeService(user, service);
 		
 	}
 	
+	
+	// cand utilizatorul curent accepta o oferta, face modificarile in gui si anunta
+	// ceilalti useri, prin network
 	public void acceptOffer (String localUser, String remoteUser, String service) {
 		this.gui.acceptOffer(remoteUser, service);
+		this.network.acceptOffer(localUser, remoteUser, service);
 	}
 	
 	public void refuseOffer (String localUser, String remoteUser, String service) {
 		this.gui.refuseOffer(remoteUser, service);
+		this.network.refuseOffer(localUser, remoteUser, service);
 	}
 	
 	public void makeOffer(String localUser, String remoteUser, String service) {
 		// cand un furnizor face o oferta unui anumit buyer
 		// se trimite pe network catre buyerul respectiv
 		
-		this.gui.makeOffer(remoteUser, service);		
-		this.gui.sellerMadeOffer(remoteUser, service);
+		this.gui.makeOffer(remoteUser, service);
+		this.network.makeOffer(localUser, remoteUser, service);
+		//this.gui.sellerMadeOffer(remoteUser, service);
 	}
 	
 	public void dropAuction(String localUser, String remoteUser, String service) {
@@ -92,11 +97,52 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		// se trimite pe network catre buyerul respectiv
 		
 		this.gui.dropAuction(remoteUser, service);
+		this.network.dropAuction(localUser, remoteUser, service);
 	}
 	
+	
+	// se apeleaza de gui cand se incheie programul;
+	// in network se vor notifica toti ceilalti prin
+	// intermediul mediator.userLoggedOut
+	public void logOut(String username) {
+		this.network.logOut(username);
+	}
+	
+	
+	// se apeleaza de network cand un user face logout
 	public void userLoggedOut (String username) {
 		// notifica userii ca username s-a delogat
 		this.gui.userLoggedOut(username);
+	}
+
+
+	public void sellerMadeOffer(String remoteUser, String service) {
+		this.gui.sellerMadeOffer(remoteUser, service);
+	}
+
+
+	public void sellerDroppedAuction(String remoteUser, String service) {
+		this.gui.sellerDroppedAuction(remoteUser, service);
+	}
+
+
+	public void userActivatedService(String remoteUser, String service) {
+		this.gui.userActivatedService(remoteUser, service);
+	}
+
+
+	public void userDeactivatedService(String remoteUser, String service) {
+		this.gui.userDeactivatedService(remoteUser, service);
+	}
+
+
+	public void buyerAcceptedOffer(String remoteUser, String service) {
+		this.gui.buyerAcceptedOffer(remoteUser, service);
+	}
+
+
+	public void buyerRefusedOffer(String remoteUser, String service) {
+		this.gui.buyerRefusedOffer(remoteUser, service);
 	}
 	
 }

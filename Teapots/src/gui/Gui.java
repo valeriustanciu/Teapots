@@ -165,7 +165,7 @@ public class Gui extends JPanel implements IGui{
 					}
 				}
 				
-				mediator.userLoggedOut(userName);
+				mediator.logOut(userName);
 				System.exit(0);
 			}
 		});
@@ -430,6 +430,7 @@ public class Gui extends JPanel implements IGui{
 		for (int i = 0; i < services.size(); i++) {
 			if (services.get(i).getService().equals(service)) {
 				index = i;
+				break;
 			}
 		}
 		
@@ -459,6 +460,7 @@ public class Gui extends JPanel implements IGui{
 			}
 			
 			this.auctionTable.setModel(model);
+			System.out.println("A facut si in gui");
 		}
 	}
 	
@@ -491,6 +493,42 @@ public class Gui extends JPanel implements IGui{
 						null, "Cannot drop auction!", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
+		}
+	}
+	
+	public void sellerDroppedAuction (String remoteUser, String service) {
+		int index = -1;
+		int row = -1;
+		for (int i = 0; i < services.size(); i++) {
+			if (services.get(i).getService().equals(service)) {
+				index = i;
+				break;
+			}
+		}
+		
+		for (int i = 0; i < auctionTable.getRowCount(); i++) {
+			if (model.getValueAt(i, 0).equals(service)) {
+				row = i;
+				break;
+			}
+		}
+		
+		if (row != -1 && index != -1){
+			services.get(index).changeStatus(remoteUser, new String("No offer"));
+						
+			if (model.getValueAt(row, 2) instanceof String) {
+				String value = (String)model.getValueAt(row, 2);
+				if (value != null && value.equals(remoteUser)) {
+					model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
+				}
+			}
+			else {
+				JComboBox comboBox = (JComboBox) model.getValueAt(row, 2);
+				if (comboBox.getSelectedItem() != null && comboBox.getSelectedItem().equals(remoteUser))
+					model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
+			}
+			
+			this.auctionTable.setModel(model);
 		}
 	}
 	

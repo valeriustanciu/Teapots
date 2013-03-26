@@ -22,6 +22,7 @@ public interface IGui {
 	public void acceptOffer (String remoteUser, String service);
 	public void refuseOffer (String remoteUser, String service);
 	public void sellerMadeOffer (String remoteUser, String service);
+	public void sellerDroppedAuction (String remoteUser, String service);
 	
 	// metode pt seller
 	public void userActivatedService (String remoteUser, String service);
