@@ -213,25 +213,7 @@ public class Gui extends JPanel implements IGui{
 				
 		col = auctionTable.getColumnModel().getColumn(3);
 		col.setCellRenderer(customRenderer);
-		
-		//TEST TEST TEST
-		
-		if(this.userType.equals("seller")) {
-			ArrayList<String> aux = new ArrayList<String>();
-			aux.add("CUCU");
-			aux.add("CECE");
-			this.populateServiceUserList("imprimare", aux);
-		}
-		//TEST TEST TEST
-		
-		this.userActivatedService("GIGI", "imprimare");
-		
-		//this.userDeactivatedService("GIGI", "imprimare");
-		
-		//this.makeOffer("GIGI", "imprimare");
-		//this.buyerRefusedOffer("GIGI", "imprimare");
-		// END TEST TEST TEST
-		
+				
 		final Gui currentGui = this;
 		auctionTable.addMouseListener(new MouseAdapter () {
 			public void mouseClicked(MouseEvent e) {
@@ -327,7 +309,6 @@ public class Gui extends JPanel implements IGui{
 		
 		comboBoxes.get(row).setSelectedItem(null);
 		
-		// TODO ?
 		//this.auctionTable.getColumn("Users").setCellEditor(new DefaultCellEditor(comboBox));
 
 		final String currentService = service;
@@ -782,18 +763,41 @@ public class Gui extends JPanel implements IGui{
 	}
 	
 	public void userLoggedOut (String username) {
-		for (int i = 0; i < services.size(); i++) {
-			ArrayList<Pair<String, String>> userServices = services.get(i).getList();
-			for (int j = 0; j < userServices.size(); j++) {
-				if (userServices.get(j).getUser().equals(username) && 
-						userServices.get(j).getStatus().contains("Transfer") &&
-						!userServices.get(j).getStatus().equals("Transfer completed")) {
-					services.get(i).changeStatus(userServices.get(j).getUser(), "Transfer failed");
+		for (int i = 0; i < model.getRowCount(); i++) {
+			for (int j = 0; j < services.size(); j++) {
+				
+				if (!model.getValueAt(i, 0).equals(services.get(j).getService()))
+					continue;
+				
+				ArrayList<Pair<String, String>> userServices = services.get(j).getList();
+				
+				for (int k = 0; k < userServices.size(); k++) {
+					if (userServices.get(k).getUser().equals(username)) {
+						if (userServices.get(k).getStatus().contains("Transfer") &&
+							!userServices.get(k).getStatus().equals("Transfer completed")) {
+							services.get(j).changeStatus(userServices.get(k).getUser(), "Transfer failed");
+							if (model.getValueAt(i, 2).equals(username)) {
+								model.setValueAt("Transfer failed", i, 1);
+								auctionTable.setModel(model);
+							}
+						}
+						
+						else {
+							services.get(j).removeUser(username);
+							if (model.getValueAt(i, 2).equals(username)) {
+								comboBoxes.get(i).setSelectedItem(null);
+								comboBoxes.get(i).removeItem(username);
+								model.setValueAt(null, i, 2);
+								model.setValueAt("active", i, 1);
+								auctionTable.setModel(model);
+							}
+						}
+					}
 				}
 			}
 		}
 	}
-	
+		
 	public static void buildGUI() {
 		JFrame frame = new JFrame("Teapots"); // title
 		frame.setContentPane(new Gui()); // content: the JPanel above

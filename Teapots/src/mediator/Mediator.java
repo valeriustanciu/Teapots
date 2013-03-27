@@ -42,9 +42,9 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		System.out.println("Add service " + service + " for user " + user);
 		
 		ArrayList<String> test = new ArrayList<String>();
-		test.add("Cici");
-		test.add("Caca");
+		test.add("Gigi");
 		test.add("Coco");
+		test.add("Cucu");
 		if (service.equals("canapea"))
 			this.gui.populateServiceUserList(service, test);
 		

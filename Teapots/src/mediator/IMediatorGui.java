@@ -17,6 +17,5 @@ public interface IMediatorGui {
 	public void acceptOffer (String localUser, String remoteUser, String service);
 	public void refuseOffer (String localUser, String remoteUser, String service);
 	
-	
 	public void logOut (String username);
 }
