@@ -441,7 +441,6 @@ public class Gui extends JPanel implements IGui{
 			}
 			
 			this.auctionTable.setModel(model);
-			System.out.println("A facut si in gui");
 		}
 	}
 	

@@ -12,8 +12,6 @@ public class Transfer extends SwingWorker<Integer, Integer> {
 
 	  @Override
 	  protected Integer doInBackground() throws Exception {
-		// TODO 3.2
-		  
 		  setProgress(0);
 		  int count = 10;
 		  int i     = 0;
@@ -25,7 +23,6 @@ public class Transfer extends SwingWorker<Integer, Integer> {
 		  	publish(i);
 		      }
 		  } catch (InterruptedException e) {
-		      // TODO Auto-generated catch block
 		      e.printStackTrace();
 		  }
 		  

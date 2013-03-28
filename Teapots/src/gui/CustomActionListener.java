@@ -76,8 +76,6 @@ public class CustomActionListener implements ActionListener {
 		}
 		
 		if (e.getActionCommand().equals("Drop auction")) {
-			System.out.println(table.getSelectedColumn());
-			
 			MyDefaultTableModel model = (MyDefaultTableModel) table.getModel();
 			String service = model.getValueAt(table.getSelectedRow(), 0).toString();
 			String remoteUser = model.getValueAt(table.getSelectedRow(), 2).toString();

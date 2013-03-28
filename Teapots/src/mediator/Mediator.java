@@ -56,9 +56,6 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		if (service.equals("scaun"))
 			this.gui.populateServiceUserList(service, test2);
 		
-//		this.gui.sellerMadeOffer("Caca", "scaun");
-		// 
-		
 		this.network.addService(user, service);
 	}
 	
@@ -89,7 +86,6 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		
 		this.gui.makeOffer(remoteUser, service);
 		this.network.makeOffer(localUser, remoteUser, service);
-		//this.gui.sellerMadeOffer(remoteUser, service);
 	}
 	
 	public void dropAuction(String localUser, String remoteUser, String service) {

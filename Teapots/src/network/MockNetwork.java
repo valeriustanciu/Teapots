@@ -10,7 +10,6 @@ public class MockNetwork extends Thread implements INetwork {
 	public MockNetwork(IMediatorNetwork med) {
 		this.mediator = med;
 		
-		
 		new Thread() {
 			@Override
 			public void run() {
