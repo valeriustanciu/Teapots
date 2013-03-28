@@ -9,18 +9,21 @@ public class MockNetwork extends Thread implements INetwork {
 	
 	public MockNetwork(IMediatorNetwork med) {
 		this.mediator = med;
+		
+		
 		new Thread() {
 			@Override
 			public void run() {
 				
 				try {
-					Thread.sleep(10000);
+					Thread.sleep(20000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
 				mediator.sellerMadeOffer("Gigi", "scaun");
+				mediator.userActivatedService("Grigore", "imprimare");
 				
 				try {
 					Thread.sleep(20000);
@@ -30,6 +33,7 @@ public class MockNetwork extends Thread implements INetwork {
 				}
 				
 				mediator.userLoggedOut("Gigi");
+				mediator.buyerAcceptedOffer("Grigore", "imprimare");
 				
 			}
 		}.start();
