@@ -4,7 +4,7 @@
     <!-- Properties -->
  
     <property name="src.dir" value="src" />
-    <property name="build.dir" value="build" />
+    <property name="build.dir" value="bin" />
  
     <!-- Targets -->
  
