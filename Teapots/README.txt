@@ -50,6 +50,12 @@ atat metode care au rolul unor actiuni (ex: makeOffer, acceptOffer), cat si meto
 
 
 
+- RULARE:
+	- se poate folosi Eclipse (Import project, din folderul Teapots)
+	- se poate rula, de asemenea, in Linux, folosind comanda "ant"
+
+
+
 - TESTARE:
 	- avem doua scenarii: unul pentru buyer si unul pentru seller
 	- scenariu pentru buyer:
