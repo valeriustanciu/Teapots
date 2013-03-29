@@ -1,2 +1,2 @@
-andreea mypass seller
+andreea herpass seller
 valeriu hispass buyer
