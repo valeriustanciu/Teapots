@@ -52,7 +52,7 @@ atat metode care au rolul unor actiuni (ex: makeOffer, acceptOffer), cat si meto
 
 - RULARE:
 	- se poate folosi Eclipse (Import project, din folderul Teapots)
-	- se poate rula, de asemenea, in Linux, folosind comanda "ant"
+	- se poate rula si folosind comanda "ant" atat in Windows, cat si in Linux
 
 
 
@@ -67,6 +67,11 @@ atat metode care au rolul unor actiuni (ex: makeOffer, acceptOffer), cat si meto
 		- dupa 20 de secunde de la acceptarea ofertei, seller-ul Gigi se va deloga (simulare)
 		- se observa ca el dispare din lista de useri pentru "scaun"
 
+		In cazul in care pasii mentionati nu sunt executati in timp util, reies urmatoarele scenarii:
+			- daca nu se va activa serviciul in primele 20 de secunde, Gigi nu va mai face nicio oferta
+			- daca nu se accepta oferta facuta de Gigi, acesta se va deloga si va disparea din lista userilor pentru "scaun"
+			- daca se va intarzia acceptarea ofertei, transferul poate esua, dar userul va ramane in lista, cu starea "Transfer failed" asociata
+
 	- scenariu pentru seller:
 		- login cu username andreea, password herpass
 		- se observa ca, initial, nu exista nici un serviciu activ (presupunem ca nu este nici un buyer
@@ -77,3 +82,6 @@ atat metode care au rolul unor actiuni (ex: makeOffer, acceptOffer), cat si meto
 		- se observa modificarea statusului in "Offer made"
 		- dupa 20 de secunde de la aparitia lui Grigore in lista, el va accepta oferta facuta de noi;
 		ca efect, vom vedea inceperea transferului
+
+		In cazul in care pasii mentionati nu sunt executati in timp util, reiese doar urmatorul scenariu:
+			- daca in 20 de secunde de la aparitia lui Grigore in lista nu ii vom face o oferta, acesta nu o va accepta
