@@ -67,10 +67,12 @@ atat metode care au rolul unor actiuni (ex: makeOffer, acceptOffer), cat si meto
 		- dupa 20 de secunde de la acceptarea ofertei, seller-ul Gigi se va deloga (simulare)
 		- se observa ca el dispare din lista de useri pentru "scaun"
 
-		In cazul in care pasii mentionati nu sunt executati in timp util, reies urmatoarele scenarii:
+		- in cazul in care pasii mentionati nu sunt executati in timp util, reies urmatoarele scenarii:
 			- daca nu se va activa serviciul in primele 20 de secunde, Gigi nu va mai face nicio oferta
-			- daca nu se accepta oferta facuta de Gigi, acesta se va deloga si va disparea din lista userilor pentru "scaun"
-			- daca se va intarzia acceptarea ofertei, transferul poate esua, dar userul va ramane in lista, cu starea "Transfer failed" asociata
+			- daca nu se accepta oferta facuta de Gigi, acesta se va deloga si va disparea din lista 
+			userilor pentru "scaun"
+			- daca se va intarzia acceptarea ofertei, transferul poate esua, dar userul va ramane in lista,
+			cu starea "Transfer failed" asociata
 
 	- scenariu pentru seller:
 		- login cu username andreea, password herpass
@@ -83,5 +85,6 @@ atat metode care au rolul unor actiuni (ex: makeOffer, acceptOffer), cat si meto
 		- dupa 20 de secunde de la aparitia lui Grigore in lista, el va accepta oferta facuta de noi;
 		ca efect, vom vedea inceperea transferului
 
-		In cazul in care pasii mentionati nu sunt executati in timp util, reiese doar urmatorul scenariu:
-			- daca in 20 de secunde de la aparitia lui Grigore in lista nu ii vom face o oferta, acesta nu o va accepta
+		- in cazul in care pasii mentionati nu sunt executati in timp util, reiese doar urmatorul scenariu:
+			- daca in 20 de secunde de la aparitia lui Grigore in lista nu ii vom face o oferta,
+			acesta nu o va accepta
