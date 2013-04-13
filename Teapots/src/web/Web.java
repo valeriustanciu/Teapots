@@ -139,6 +139,7 @@ public class Web implements IWeb{
 					this.getUserType(usersInfo.get(i).getUsername()).equals("seller"))
 				users.add(usersInfo.get(i).getUsername());
 		}
+		System.out.println(users);
 		return users;
 	}
 	

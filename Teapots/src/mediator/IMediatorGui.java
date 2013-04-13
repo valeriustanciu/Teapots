@@ -7,6 +7,7 @@ import gui.IGui;
 public interface IMediatorGui {
 	public void setGui(IGui gui);
 
+	public String getUserType(String username);
 	public String getUserType(String username, String password);
 	public ArrayList<String> getUserServices (String user);
 	

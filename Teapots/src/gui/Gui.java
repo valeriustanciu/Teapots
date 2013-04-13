@@ -14,6 +14,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -133,6 +134,8 @@ public class Gui extends JPanel implements IGui{
 	
 	
 	public void auctionGui() {
+		System.out.println("current user: " + userName);
+
 		JPanel topPanel = new JPanel(new GridLayout(1, 2));
 		JLabel userNameAndType = new JLabel(userName + ", " + userType, JLabel.CENTER);
 		model = new MyDefaultTableModel();
@@ -382,8 +385,6 @@ public class Gui extends JPanel implements IGui{
 				model.setValueAt("inactive", i, 1);
 				auctionTable.setModel(model);
 				
-
-				
 				auctionTable.getColumn("Users").setCellEditor(new DefaultCellEditor(comboBox));
 			}
 		}
@@ -414,7 +415,7 @@ public class Gui extends JPanel implements IGui{
 		
 	}
 	
-	public void sellerMadeOffer (String remoteUser, String service) {
+	public void sellerMadeOffer (String localUser, String remoteUser, String service) {
 		int index = -1;
 		int row = -1;
 		for (int i = 0; i < services.size(); i++) {
@@ -432,21 +433,31 @@ public class Gui extends JPanel implements IGui{
 		}
 		
 		if (row != -1 && index != -1){
-			if (userType.equals("buyer")) 
-				services.get(index).changeStatus(remoteUser, new String("Offer made"));
-			else if (userType.equals("seller"))
+			
+			if (userType.equals("buyer") && userName.equals(remoteUser))
+				services.get(index).changeStatus(localUser, new String("Offer made"));
+			else if (userType.equals("seller") && services.get(index).getStatus(remoteUser).equals("Offer made"))
 				services.get(index).changeStatus(remoteUser, new String("Offer exceeded"));
 						
 			if (model.getValueAt(row, 2) instanceof String) {
 				String value = (String)model.getValueAt(row, 2);
-				if (value != null && value.equals(remoteUser)) {
-					model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
+				if (value != null && value.equals(localUser)) {
+					model.setValueAt(services.get(index).getStatus(localUser), row, 1);
+				}
+				else {
+					if (value != null && value.equals(remoteUser)) {
+						model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
+					}
 				}
 			}
 			else {
 				JComboBox comboBox = (JComboBox) model.getValueAt(row, 2);
-				if (comboBox.getSelectedItem() != null && comboBox.getSelectedItem().equals(remoteUser))
-					model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
+				if (comboBox.getSelectedItem() != null && comboBox.getSelectedItem().equals(localUser))
+					model.setValueAt(services.get(index).getStatus(localUser), row, 1);
+				else {
+					if (comboBox.getSelectedItem() != null && comboBox.getSelectedItem().equals(remoteUser))
+						model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
+				}
 			}
 			
 			this.auctionTable.setModel(model);
@@ -740,6 +751,7 @@ public class Gui extends JPanel implements IGui{
 						model.setValueAt("active", i, 1);
 						model.setValueAt(comboBox, i, 2);
 						auctionTable.setModel(model);
+						return;
 					}
 				}
 				if(j == services.size()) {
@@ -766,14 +778,30 @@ public class Gui extends JPanel implements IGui{
 							services.get(j).removeUser(remoteUser);
 							
 							if (services.get(j).getSize() != 0) {
-								JComboBox comboBox = (JComboBox) model.getValueAt(i, 2);
-								comboBox.removeItem(remoteUser);
-								if (comboBox.getSelectedItem() == null) {
-									model.setValueAt("active", i, 1);
-								}
 								
-								model.setValueAt(comboBox, i, 2);
-								auctionTable.setModel(model);
+								if (model.getValueAt(i, 2) instanceof String) {
+									JComboBox comboBox = new JComboBox();
+									for (int k = 0; k < services.get(j).getSize(); k++)
+										comboBox.addItem(services.get(j).getList().get(k).getUser());
+									
+									if (comboBox.getSelectedItem() == null) {
+										model.setValueAt("active", i, 1);
+									}
+									//comboBox.setSelectedItem((String)model.getValueAt(i, 2));
+									model.setValueAt(comboBox, i, 2);
+									auctionTable.setModel(model);
+									System.out.println(((JComboBox)model.getValueAt(i, 2)).getItemCount());
+								}
+								else {
+									JComboBox comboBox = (JComboBox) model.getValueAt(i, 2);
+									comboBox.removeItem(remoteUser);
+									if (comboBox.getSelectedItem() == null) {
+										model.setValueAt("active", i, 1);
+									}
+									
+									model.setValueAt(comboBox, i, 2);
+									auctionTable.setModel(model);
+								}
 							}
 							else {
 								this.removeServiceUserList(service);

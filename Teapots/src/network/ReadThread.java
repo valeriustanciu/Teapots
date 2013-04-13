@@ -82,7 +82,7 @@ public class ReadThread extends Thread{
 					
 					
 					if (msg.getAction().equals("makeOffer")) {
-						network.sellerMadeOffer(msg.getFromUser(), msg.getArgs().get(0));
+						network.sellerMadeOffer(msg.getFromUser(), msg.getToUser(), msg.getArgs().get(0));
 					}
 					else if (msg.getAction().equals("dropAuction")) {
 						network.sellerDroppedAuction(msg.getFromUser(), msg.getArgs().get(0));

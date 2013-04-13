@@ -102,8 +102,8 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 	}
 
 
-	public void sellerMadeOffer(String remoteUser, String service) {
-		this.gui.sellerMadeOffer(remoteUser, service);
+	public void sellerMadeOffer(String localUser, String remoteUser, String service) {
+		this.gui.sellerMadeOffer(localUser, remoteUser, service);
 	}
 
 

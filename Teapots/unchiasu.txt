@@ -1,3 +1,4 @@
 scaun
 masa
 cizme
+imprimare

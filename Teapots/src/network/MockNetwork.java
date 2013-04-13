@@ -21,7 +21,7 @@ public class MockNetwork extends Thread implements INetwork {
 					e.printStackTrace();
 				}
 				
-				mediator.sellerMadeOffer("Gigi", "scaun");
+				//mediator.sellerMadeOffer("Gigi", "scaun");
 				mediator.userActivatedService("Grigore", "imprimare");
 				
 				try {
@@ -99,7 +99,7 @@ public class MockNetwork extends Thread implements INetwork {
 	}
 
 	@Override
-	public void sellerMadeOffer(String remoteUser, String service) {
+	public void sellerMadeOffer(String localUser, String remoteUser, String service) {
 		// TODO Auto-generated method stub
 		
 	}

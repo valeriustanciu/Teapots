@@ -12,5 +12,4 @@ public class MyDefaultTableModel extends DefaultTableModel {
 			return false;
 		return true;
 	}
-	
 }

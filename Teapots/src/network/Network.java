@@ -85,9 +85,12 @@ public class Network implements INetwork {
 		
 		Message msg = new Message(localUser, remoteUser, "makeOffer", args);
 		
-		WriteThread wt = new WriteThread(users.getUserIP(remoteUser), users.getUserPort(remoteUser),
-				msg);
-		wt.start();
+		ArrayList<UserInfo> usersInfo = users.getLoggedUsers();
+		for (int i = 0; i < usersInfo.size(); i++) {
+			WriteThread wt = new WriteThread(usersInfo.get(i).getIp(), usersInfo.get(i).getPort(),
+					msg);
+			wt.start();
+		}
 	}
 	
 	
@@ -167,9 +170,9 @@ public class Network implements INetwork {
 
 
 	@Override
-	public void sellerMadeOffer(String remoteUser, String service) {
+	public void sellerMadeOffer(String localUser, String remoteUser, String service) {
 		// TODO Auto-generated method stub
-		mediator.sellerMadeOffer(remoteUser, service);
+		mediator.sellerMadeOffer(localUser, remoteUser, service);
 	}
 
 
