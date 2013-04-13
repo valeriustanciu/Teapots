@@ -119,6 +119,7 @@ public class Gui extends JPanel implements IGui{
 				userType = mediator.getUserType(usernameText, passwordText);
 				if (userType != null) {
 					userName = usernameText;
+					mediator.startNetwork();
 					auctionGui();
 				}
 				else {

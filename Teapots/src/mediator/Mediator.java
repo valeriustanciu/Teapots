@@ -6,10 +6,9 @@ import gui.IGui;
 import network.INetwork;
 import network.MockNetwork;
 import network.Network;
+import network.UserInfo;
 import web.IWeb;
 import web.Web;
-
-
 
 public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 	private INetwork network;
@@ -18,7 +17,7 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 	
 	public Mediator() {
 		web = new Web(this);
-		network = new MockNetwork(this);
+//		network = new MockNetwork(this);
 	}
 	
 	
@@ -139,6 +138,22 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 
 	public void buyerRefusedOffer(String remoteUser, String service) {
 		this.gui.buyerRefusedOffer(remoteUser, service);
+	}
+	
+	public void startNetwork() {
+		this.network = new Network(this);
+	}
+
+	public String getCurrentUser () {
+		return this.gui.getUserName();
+	}
+	
+	public UserInfo getOwnInfoFromServer () {
+		return this.web.getOwnInfo(this.getCurrentUser());
+	}
+	
+	public ArrayList<UserInfo> getLoggedUsersFromServer () {
+		return this.web.getLoggedUsers(this.getCurrentUser());
 	}
 	
 }

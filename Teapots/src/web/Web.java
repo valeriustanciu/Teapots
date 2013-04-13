@@ -11,6 +11,8 @@ import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 import mediator.IMediatorWeb;
+import network.NetworkInfo;
+import network.UserInfo;
 
 public class Web implements IWeb{
 	private IMediatorWeb mediator;
@@ -78,4 +80,40 @@ public class Web implements IWeb{
 		return userServices;
 	}
 	
+	// hardcodat - returneaza lista de utilizatori logati, mai putin userul curent
+	public ArrayList<UserInfo> getLoggedUsers (String username) {
+		ArrayList<UserInfo> users = new ArrayList<UserInfo>();
+		users.add(new UserInfo("andreea", "127.0.0.1", 30000));
+		users.add(new UserInfo("valeriu", "127.0.0.1", 30001));
+		users.add(new UserInfo("student", "127.0.0.1", 30002));
+		
+		for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).getUsername().equals(username)) {
+				users.remove(i);
+				break;
+			}
+		}
+		
+		return users;
+	}
+	
+	public UserInfo getOwnInfo (String username) {
+		int port = -1;
+		String ip = "127.0.0.1";
+		if (username.equals("andreea")) {
+			port = 30000;
+		}
+		else {
+			if (username.equals("valeriu")) {
+				port = 30001;
+			}
+			else {
+				if (username.equals("student")) {
+					port = 30002;
+				}
+			}
+		}
+		
+		return new UserInfo(username, ip, port);
+	}
 }
