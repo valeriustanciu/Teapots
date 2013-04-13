@@ -14,6 +14,7 @@ public interface IMediatorNetwork {
 	public void buyerAcceptedOffer (String remoteUser, String service);
 	public void buyerRefusedOffer (String remoteUser, String service);
 	
+	public String getUserType (String user);
 	public String getCurrentUser ();
 	public UserInfo getOwnInfoFromServer ();
 	public ArrayList<UserInfo> getLoggedUsersFromServer();

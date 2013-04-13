@@ -117,6 +117,8 @@ public class Network implements INetwork {
 		ArrayList<UserInfo> usersInfo = users.getLoggedUsers();
 		for (int i = 0; i < usersInfo.size(); i++) {
 			//de verificat user type!!:-???
+			if (this.mediator.getUserType(usersInfo.get(i).getUsername()).equals("buyer"))
+				continue;
 			WriteThread wt = new WriteThread(usersInfo.get(i).getIp(), usersInfo.get(i).getPort(),
 					msg);
 			wt.start();

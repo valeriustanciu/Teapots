@@ -25,6 +25,10 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		this.gui = gui;
 	}
 	
+	public String getUserType (String user) {
+		return web.getUserType(user);
+	}
+	
 	public String getUserType (String user, String pass) {
 		return web.getUserType(user, pass);
 	}
@@ -40,22 +44,9 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		// se populeaza comboboxurile lor cu buyerul acesta
 		System.out.println("Add service " + service + " for user " + user);
 		
-		ArrayList<String> test = new ArrayList<String>();
-		test.add("Gigi");
-		test.add("Coco");
-		test.add("Cucu");
-		if (service.equals("canapea"))
-			this.gui.populateServiceUserList(service, test);
-		
-		ArrayList<String> test2 = new ArrayList<String>();
-		test2.add("Gigi");
-		test2.add("Gaga");
-		test2.add("Gogo");
-		
-		if (service.equals("scaun"))
-			this.gui.populateServiceUserList(service, test2);
-		
+		this.gui.populateServiceUserList(service, this.web.getUsersWithService(user, service));
 		this.network.addService(user, service);
+		
 	}
 	
 	public void removeService (String user, String service) {

@@ -23,6 +23,37 @@ public class Web implements IWeb{
 	}
 	
 	
+	public String getUserType(String user) {
+		try {
+			File configFile = new File("config.txt");
+			
+			FileInputStream fstream = new FileInputStream(configFile);
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			
+			//Read config file and check if login is OK
+			while ((strLine = br.readLine()) != null)   {
+			     StringTokenizer st = new StringTokenizer(strLine);
+			     String username = st.nextToken();
+			     String password = st.nextToken();
+			     String type = st.nextToken();
+			     
+			     if (username.equals(user)) {
+			    	 return type;
+			     }
+			}
+			in.close();
+			br.close();
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(
+					null, "Error " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return null;
+	}
+	
 	public String getUserType(String user, String pass) {
 		try {
 			File configFile = new File("config.txt");
@@ -86,6 +117,7 @@ public class Web implements IWeb{
 		users.add(new UserInfo("andreea", "127.0.0.1", 30000));
 		users.add(new UserInfo("valeriu", "127.0.0.1", 30001));
 		users.add(new UserInfo("student", "127.0.0.1", 30002));
+		users.add(new UserInfo("unchiasu", "127.0.0.1", 30003));
 		
 		for (int i = 0; i < users.size(); i++) {
 			if (users.get(i).getUsername().equals(username)) {
@@ -94,6 +126,19 @@ public class Web implements IWeb{
 			}
 		}
 		
+		return users;
+	}
+	
+	public ArrayList<String> getUsersWithService (String username, String service) {
+		ArrayList<String> users = new ArrayList<String>();
+		ArrayList<UserInfo> usersInfo = this.getLoggedUsers(username);
+		
+		for (int i = 0; i < usersInfo.size(); i++) {
+			ArrayList <String> userServices = this.getUserServices(usersInfo.get(i).getUsername());
+			if (userServices.contains(service) && 
+					this.getUserType(usersInfo.get(i).getUsername()).equals("seller"))
+				users.add(usersInfo.get(i).getUsername());
+		}
 		return users;
 	}
 	
@@ -110,6 +155,11 @@ public class Web implements IWeb{
 			else {
 				if (username.equals("student")) {
 					port = 30002;
+				}
+				else {
+					if (username.equals("unchiasu")) {
+						port = 30003;
+					}
 				}
 			}
 		}

@@ -275,14 +275,14 @@ public class Gui extends JPanel implements IGui{
 		this.add(auctionScreen, BorderLayout.CENTER);
 		this.add(topPanel, BorderLayout.NORTH);
 		this.revalidate();
-		
+		/*
 		if (this.userName.equals("andreea"))
 			this.userActivatedService("valeriu", "imprimare");
 		else {
 			ArrayList<String> users = new ArrayList<String>();
 			users.add("andreea");
 			populateServiceUserList("imprimare", users);
-		}
+		}*/
 	}
 	
 	
@@ -726,12 +726,20 @@ public class Gui extends JPanel implements IGui{
 					if(services.get(j).getService().equals(service)){
 						services.get(j).addUser(remoteUser, "No offer");
 						
-						JComboBox comboBox = (JComboBox) model.getValueAt(i, 2);
-						comboBox.addItem(remoteUser);
+						JComboBox comboBox = new JComboBox();
+						
+						if (model.getValueAt(i, 2) instanceof JComboBox) {
+							comboBox = (JComboBox) model.getValueAt(i, 2);
+							comboBox.addItem(remoteUser);
+						}
+						
+						else if (model.getValueAt(i, 2) instanceof String) {
+							comboBox.addItem(remoteUser);
+						}
+						
+						model.setValueAt("active", i, 1);
 						model.setValueAt(comboBox, i, 2);
 						auctionTable.setModel(model);
-						
-						break;
 					}
 				}
 				if(j == services.size()) {
