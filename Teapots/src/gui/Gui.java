@@ -275,6 +275,14 @@ public class Gui extends JPanel implements IGui{
 		this.add(auctionScreen, BorderLayout.CENTER);
 		this.add(topPanel, BorderLayout.NORTH);
 		this.revalidate();
+		
+		if (this.userName.equals("andreea"))
+			this.userActivatedService("valeriu", "imprimare");
+		else {
+			ArrayList<String> users = new ArrayList<String>();
+			users.add("andreea");
+			populateServiceUserList("imprimare", users);
+		}
 	}
 	
 	

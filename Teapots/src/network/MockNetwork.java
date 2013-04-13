@@ -80,4 +80,46 @@ public class MockNetwork extends Thread implements INetwork {
 		
 	}
 
+	@Override
+	public void userLoggedOut(String username) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void buyerAcceptedOffer(String remoteUser, String service) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void buyerRefusedOffer(String remoteUser, String service) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sellerMadeOffer(String remoteUser, String service) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sellerDroppedAuction(String remoteUser, String service) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void userActivatedService(String remoteUser, String service) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void userDeactivatedService(String remoteUser, String service) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
