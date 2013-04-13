@@ -639,8 +639,8 @@ public class Gui extends JPanel implements IGui{
 			if (currentStatus.equals("Offer made") || currentStatus.equals("Offer exceeded")) {
 				services.get(index).changeStatus(remoteUser, new String("Offer refused"));
 				
-				JComboBox comboBox = (JComboBox) model.getValueAt(row, 2);
-				if (comboBox.getSelectedItem() != null && comboBox.getSelectedItem().equals(remoteUser))
+				String user = (String) model.getValueAt(row, 2);
+				if (user.equals(remoteUser))
 					model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
 
 				this.auctionTable.setModel(model);
@@ -656,7 +656,16 @@ public class Gui extends JPanel implements IGui{
 			}
 		}
 		
+		int row = -1;
+		for (int i = 0; i < auctionTable.getRowCount(); i++) {
+			if (model.getValueAt(i, 0).equals(service)) {
+				row = i;
+				break;
+			}
+		}
+		
 		final int indx = index;
+		final int r = row;
 		final String remoteUserAux = remoteUser;
 
 		if (indx != -1) {
@@ -673,28 +682,28 @@ public class Gui extends JPanel implements IGui{
 			        	
 			        	if (newValue.equals(minValue + 1)) {
 			    			services.get(indx).changeStatus(remoteUserAux, new String("Transfer started"));
-			    			if (model.getValueAt(indx, 2).toString().equals(remoteUserAux))
-				        		model.setValueAt(services.get(indx).getStatus(remoteUserAux), indx, 1);
+			    			if (model.getValueAt(r, 2).toString().equals(remoteUserAux))
+				        		model.setValueAt(services.get(indx).getStatus(remoteUserAux), r, 1);
 			    			auctionTable.setModel(model);
 			        	}
 			        	if (newValue.equals(minValue + 2)) {
 			        		services.get(indx).changeStatus(remoteUserAux, new String("Transfer in progress"));
-			        		if (model.getValueAt(indx, 2).toString().equals(remoteUserAux))
-			        			model.setValueAt(services.get(indx).getStatus(remoteUserAux), indx, 1);
+			        		if (model.getValueAt(r, 2).toString().equals(remoteUserAux))
+			        			model.setValueAt(services.get(indx).getStatus(remoteUserAux), r, 1);
 			    			auctionTable.setModel(model);
 			        	}
 			        	
 			        	if (newValue.equals(maxValue)) {
 			        		if (!services.get(indx).getStatus(remoteUserAux).equals("Transfer failed")) 
 			        			services.get(indx).changeStatus(remoteUserAux, new String("Transfer completed"));
-			        		model.setValueAt(services.get(indx).getStatus(remoteUserAux), indx, 1);
-			        		model.setValueAt(remoteUserAux, indx, 2);
+			        		model.setValueAt(services.get(indx).getStatus(remoteUserAux), r, 1);
+			        		model.setValueAt(remoteUserAux, r, 2);
 			    			auctionTable.setModel(model);
 			        	}
 			        	
 			        	//model.setValueAt(remoteUserAux, indx, 2);
 			        	progressBar.setValue((Integer)evt.getNewValue());
-			        	model.setValueAt(progressBar, indx, 3);
+			        	model.setValueAt(progressBar, r, 3);
 			        	auctionTable.setModel(model);
 			        }
 				}
