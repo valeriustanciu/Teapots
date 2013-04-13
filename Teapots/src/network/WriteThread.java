@@ -16,7 +16,7 @@ public class WriteThread extends Thread{
 	private String ip;
 	private int port;
 	private static int BUF_SIZE = 1024;
-	private static boolean running = true;
+	private boolean running = true;
 	
 	public WriteThread(String ip, int port, Message msg) {
 		this.msg = msg;
@@ -25,7 +25,7 @@ public class WriteThread extends Thread{
 	}
 	
 	
-	public static void connect(SelectionKey key) throws IOException {
+	public void connect(SelectionKey key) throws IOException {
 		
 		System.out.print("CONNECT: ");
 		
@@ -40,7 +40,7 @@ public class WriteThread extends Thread{
 	}
 	
 	
-	public static void write(SelectionKey key) throws IOException {
+	public void write(SelectionKey key) throws IOException {
 		
 		System.out.println("WRITE: ");
 		
@@ -87,7 +87,9 @@ public class WriteThread extends Thread{
 			buf.put(data);
 			buf.flip();
 			
+			
 			socketChannel.register(selector, SelectionKey.OP_CONNECT, buf);
+			
 			
 			while (running) {
 				selector.select();
