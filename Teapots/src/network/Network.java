@@ -1,5 +1,10 @@
 package network;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import mediator.IMediatorNetwork;
@@ -158,7 +163,34 @@ public class Network implements INetwork {
 	@Override
 	public void buyerAcceptedOffer(String remoteUser, String service) {
 		// TODO Auto-generated method stub
+		ArrayList<String> args = new ArrayList<String>();
+		String localFileName = service + ".txt";
+		String remoteFileName = "downloaded " + service + ".txt";
+		String fileContent = new String();
+		
+		try{
+			FileInputStream fstream = new FileInputStream(localFileName);
+			DataInputStream in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			while ((strLine = br.readLine()) != null)
+				fileContent += strLine;
+			in.close();
+		}
+		catch (Exception e) {
+			System.err.println("Error: " + e.getMessage());
+		}
+		
+		args.add(fileContent);
+		
+		Message msg = new Message(localFileName, remoteFileName, "transfer", args);
+		WriteThread wt = new WriteThread(users.getUserIP(remoteUser), users.getUserPort(remoteUser),
+				msg);
+		
+		wt.start();
+		
 		mediator.buyerAcceptedOffer(remoteUser, service);
+		
 	}
 
 

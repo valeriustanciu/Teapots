@@ -80,28 +80,7 @@ public class ReadThread extends Thread{
 					
 					socketChannel.close();
 					
-					
-					if (msg.getAction().equals("makeOffer")) {
-						network.sellerMadeOffer(msg.getFromUser(), msg.getToUser(), msg.getArgs().get(0));
-					}
-					else if (msg.getAction().equals("dropAuction")) {
-						network.sellerDroppedAuction(msg.getFromUser(), msg.getArgs().get(0));
-					}
-					else if (msg.getAction().equals("acceptOffer")) {
-						network.buyerAcceptedOffer(msg.getFromUser(), msg.getArgs().get(0));
-					}
-					else if (msg.getAction().equals("refuseOffer")) {
-						network.buyerRefusedOffer(msg.getFromUser(), msg.getArgs().get(0));
-					}
-					else if (msg.getAction().equals("addService")) {
-						network.userActivatedService(msg.getFromUser(), msg.getArgs().get(0));
-					}
-					else if (msg.getAction().equals("removeService")) {
-						network.userDeactivatedService(msg.getFromUser(), msg.getArgs().get(0));
-					}
-					else if (msg.getAction().equals("logOut")) {
-						network.userLoggedOut(msg.getFromUser());
-					}
+					MessageHandler.HandleMessage(msg, network);
 					
 				} catch (IOException e) {
 					System.out.println("Connection closed: " + e.getMessage());
