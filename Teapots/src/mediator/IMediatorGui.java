@@ -20,4 +20,5 @@ public interface IMediatorGui {
 	
 	public void logOut (String username);
 	public void startNetwork();
+	public void startLogging();
 }
