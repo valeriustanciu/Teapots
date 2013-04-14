@@ -836,14 +836,7 @@ public class Gui extends JPanel implements IGui{
 						}
 						
 						else {
-							services.get(j).removeUser(username);
-							if (model.getValueAt(i, 2).equals(username)) {
-								comboBoxes.get(i).setSelectedItem(null);
-								comboBoxes.get(i).removeItem(username);
-								model.setValueAt(null, i, 2);
-								model.setValueAt("active", i, 1);
-								auctionTable.setModel(model);
-							}
+							this.userDeactivatedService(username, services.get(j).getService());
 						}
 					}
 				}

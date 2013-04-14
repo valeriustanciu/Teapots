@@ -47,7 +47,7 @@ public class CustomActionListener implements ActionListener {
 			
 			MyDefaultTableModel model = (MyDefaultTableModel) table.getModel();
 			String service = model.getValueAt(table.getSelectedRow(), 0).toString();
-			String remoteUser = model.getValueAt(table.getSelectedRow(), 2).toString();
+			String remoteUser = (String)((JComboBox) model.getValueAt(table.getSelectedRow(), 2)).getSelectedItem();
 			mediator.acceptOffer(gui.getUserName(), remoteUser, service);	
 			
 			return;
@@ -57,7 +57,7 @@ public class CustomActionListener implements ActionListener {
 			
 			MyDefaultTableModel model = (MyDefaultTableModel) table.getModel();
 			String service = model.getValueAt(table.getSelectedRow(), 0).toString();
-			String remoteUser = model.getValueAt(table.getSelectedRow(), 2).toString();
+			String remoteUser = (String)((JComboBox) model.getValueAt(table.getSelectedRow(), 2)).getSelectedItem();
 			mediator.refuseOffer(gui.getUserName(), remoteUser, service);
 			
 			return;
@@ -69,7 +69,7 @@ public class CustomActionListener implements ActionListener {
 			
 			MyDefaultTableModel model = (MyDefaultTableModel) table.getModel();
 			String service = model.getValueAt(table.getSelectedRow(), 0).toString();
-			String remoteUser = model.getValueAt(table.getSelectedRow(), 2).toString();
+			String remoteUser = (String)((JComboBox) model.getValueAt(table.getSelectedRow(), 2)).getSelectedItem();
 			mediator.makeOffer(gui.getUserName(), remoteUser, service);
 			
 			return;
@@ -78,7 +78,7 @@ public class CustomActionListener implements ActionListener {
 		if (e.getActionCommand().equals("Drop auction")) {
 			MyDefaultTableModel model = (MyDefaultTableModel) table.getModel();
 			String service = model.getValueAt(table.getSelectedRow(), 0).toString();
-			String remoteUser = model.getValueAt(table.getSelectedRow(), 2).toString();
+			String remoteUser = (String)((JComboBox) model.getValueAt(table.getSelectedRow(), 2)).getSelectedItem();
 			mediator.dropAuction(gui.getUserName(), remoteUser, service);
 			return;
 		}
