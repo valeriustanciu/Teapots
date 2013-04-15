@@ -44,8 +44,8 @@ public class NetworkInfo {
 		}
 		
 	}
-	
-	public ArrayList<UserInfo> getLoggedUsers () {
-		return this.users;
+
+	public void updateLoggedUsers (ArrayList<UserInfo> users) {
+		this.users = users;
 	}
 }

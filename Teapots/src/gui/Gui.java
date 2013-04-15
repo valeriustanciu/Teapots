@@ -465,7 +465,7 @@ public class Gui extends JPanel implements IGui{
 		}
 	}
 	
-	public void dropAuction (String remoteUser, String service) {
+	public int dropAuction (String remoteUser, String service) {
 		int index = -1;
 		int row = -1;
 		for (int i = 0; i < services.size(); i++) {
@@ -488,13 +488,17 @@ public class Gui extends JPanel implements IGui{
 				services.get(index).changeStatus(remoteUser, new String("No offer"));
 				model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
 				this.auctionTable.setModel(model);
+				return 1;
 			}
 			else {
 				JOptionPane.showMessageDialog(
 						null, "Cannot drop auction!", "Error", JOptionPane.ERROR_MESSAGE);
+				return -1;
 			}
 			
 		}
+		
+		return -1;
 	}
 	
 	public void sellerDroppedAuction (String remoteUser, String service) {
@@ -651,7 +655,7 @@ public class Gui extends JPanel implements IGui{
 			if (currentStatus.equals("Offer made") || currentStatus.equals("Offer exceeded")) {
 				services.get(index).changeStatus(remoteUser, new String("Offer refused"));
 				
-				String user = (String) model.getValueAt(row, 2);
+				String user = (String)((JComboBox) model.getValueAt(row, 2)).getSelectedItem();
 				if (user.equals(remoteUser))
 					model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
 

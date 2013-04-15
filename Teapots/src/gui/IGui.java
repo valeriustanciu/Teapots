@@ -28,7 +28,7 @@ public interface IGui {
 	public void userActivatedService (String remoteUser, String service);
 	public void userDeactivatedService (String remoteUser, String service);
 	public void makeOffer (String remoteUser, String service);
-	public void dropAuction (String remoteUser, String service);
+	public int dropAuction (String remoteUser, String service);
 	public void startTransfer (String remoteUser, String service);
 	public void buyerRefusedOffer (String remoteUser, String service);
 	public void buyerAcceptedOffer (String remoteUser, String service);

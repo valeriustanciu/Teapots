@@ -1,5 +1,6 @@
 package mediator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import log.IUserLog;
@@ -89,8 +90,12 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		// cand un furnizor renunta la oferta facuta unui anumit buyer
 		// se trimite pe network catre buyerul respectiv
 		
+		int ret_value = this.gui.dropAuction(remoteUser, service);
+		
+		if (ret_value == -1)
+			return;
+		
 		this.log.writeInfo("Drop auction for " + remoteUser + " for service " + service);
-		this.gui.dropAuction(remoteUser, service);
 		this.network.dropAuction(localUser, remoteUser, service);
 	}
 	
@@ -101,6 +106,7 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 	public void logOut(String username) {
 		this.log.writeInfo("Log out");
 		this.network.logOut(username);
+		this.web.userLoggedOut(username);
 	}
 	
 	
@@ -151,8 +157,9 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		this.network = new Network(this);
 	}
 
-	public void startLogging () {
+	public void startLogging (){
 		this.log.setLogInfo();
+		this.web.userLoggedIn(this.getCurrentUser());
 		this.log.writeInfo("User logged in");
 	}
 

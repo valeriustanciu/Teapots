@@ -41,7 +41,9 @@ public class Network implements INetwork {
 		ArrayList<String> args = new ArrayList<String>();
 		
 		Message msg = new Message(username, null, "logOut", args);
-		ArrayList<UserInfo> usersInfo = users.getLoggedUsers();
+		ArrayList<UserInfo> usersInfo = mediator.getLoggedUsersFromServer();
+		users.updateLoggedUsers(usersInfo);
+
 		for (int i = 0; i < usersInfo.size(); i++) {
 			//de verificat user type!!:-???
 			WriteThread wt = new WriteThread(usersInfo.get(i).getIp(), usersInfo.get(i).getPort(),
@@ -90,7 +92,9 @@ public class Network implements INetwork {
 		
 		Message msg = new Message(localUser, remoteUser, "makeOffer", args);
 		
-		ArrayList<UserInfo> usersInfo = users.getLoggedUsers();
+		ArrayList<UserInfo> usersInfo = mediator.getLoggedUsersFromServer();
+		users.updateLoggedUsers(usersInfo);
+
 		for (int i = 0; i < usersInfo.size(); i++) {
 			WriteThread wt = new WriteThread(usersInfo.get(i).getIp(), usersInfo.get(i).getPort(),
 					msg);
@@ -122,7 +126,9 @@ public class Network implements INetwork {
 		args.add(service);
 		
 		Message msg = new Message(user, null, "addService", args);
-		ArrayList<UserInfo> usersInfo = users.getLoggedUsers();
+		ArrayList<UserInfo> usersInfo = mediator.getLoggedUsersFromServer();
+		users.updateLoggedUsers(usersInfo);
+
 		for (int i = 0; i < usersInfo.size(); i++) {
 			//de verificat user type!!:-???
 			if (this.mediator.getUserType(usersInfo.get(i).getUsername()).equals("buyer"))
@@ -142,7 +148,9 @@ public class Network implements INetwork {
 		args.add(service);
 		
 		Message msg = new Message(user, null, "removeService", args);
-		ArrayList<UserInfo> usersInfo = users.getLoggedUsers();
+		ArrayList<UserInfo> usersInfo = mediator.getLoggedUsersFromServer();
+		users.updateLoggedUsers(usersInfo);
+		
 		for (int i = 0; i < usersInfo.size(); i++) {
 			//de verificat user type!!:-???
 			WriteThread wt = new WriteThread(usersInfo.get(i).getIp(), usersInfo.get(i).getPort(),
