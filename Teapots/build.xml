@@ -1,28 +1,50 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="Teapots" basedir="." default="run">
  
     <!-- Properties -->
  
-    <property name="src.dir" value="src" />
-    <property name="build.dir" value="bin" />
- 
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="bin"/>
+    <property name="lib.dir" value="lib"/>
     <!-- Targets -->
  
+    <path id="classpath">
+    	<fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+	
     <target name="compile">
-        <mkdir dir="${build.dir}" />
-        <javac srcdir="${src.dir}" destdir="${build.dir}" />
+    	<mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath">
+        </javac>
     </target>
  
     <target name="run" depends="compile">
-        <java classname="gui.Gui" fork="true">
-            <classpath>
-                <pathelement location="${build.dir}" />
-            </classpath>
-        </java>
+    	<parallel>
+            <java classname="gui.Gui" fork="true" classpathref="classpath">
+            	<classpath>
+                    <pathelement location="${build.dir}"/>
+            	</classpath>
+            </java>
+            <java classname="gui.Gui" fork="true" classpathref="classpath">
+            	<classpath>
+                    <pathelement location="${build.dir}"/>
+            	</classpath>
+            </java>
+            <java classname="gui.Gui" fork="true" classpathref="classpath">
+            	<classpath>
+                    <pathelement location="${build.dir}"/>
+            	</classpath>
+            </java>
+            <java classname="gui.Gui" fork="true" classpathref="classpath">
+            	<classpath>
+                    <pathelement location="${build.dir}"/>
+            	</classpath>
+            </java>
+        </parallel>
     </target>
  
     <target name="clean">
-        <delete dir="${build.dir}" />
+        <delete dir="${build.dir}"/>
     </target>
 	
 </project>
