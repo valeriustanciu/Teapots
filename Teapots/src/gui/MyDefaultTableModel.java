@@ -10,10 +10,18 @@ public class MyDefaultTableModel extends DefaultTableModel {
 	private static final long serialVersionUID = 1L;
 
 	public boolean isCellEditable (int row, int column) {
-		if (column < 2)
+		if (column < 2 || column == 3)
 			return false;
 		return true;
 	}
+	
+	public Class<?> getColumnClass(int c)  
+    {  
+		if (c < 2) return String.class;
+		if (c == 2) return JComboBox.class;
+        if (c == 3) return Integer.class;  
+        return JProgressBar.class;
+    }  
 	
 	@Override
 	public void setValueAt (Object aValue, int row, int column) {

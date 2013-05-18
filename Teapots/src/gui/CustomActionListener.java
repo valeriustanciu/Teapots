@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import mediator.IMediatorGui;
@@ -68,9 +70,12 @@ public class CustomActionListener implements ActionListener {
 			// apeleaza metoda makeOffer din mediator
 			
 			MyDefaultTableModel model = (MyDefaultTableModel) table.getModel();
+			int price = Integer.parseInt( JOptionPane.showInputDialog(null,
+			        "Enter a price",
+			        JOptionPane.INFORMATION_MESSAGE));
 			String service = model.getValueAt(table.getSelectedRow(), 0).toString();
 			String remoteUser = (String)((JComboBox) model.getValueAt(table.getSelectedRow(), 2)).getSelectedItem();
-			mediator.makeOffer(gui.getUserName(), remoteUser, service);
+			mediator.makeOffer(gui.getUserName(), remoteUser, service, new Integer(price));
 			
 			return;
 		}

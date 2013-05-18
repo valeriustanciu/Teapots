@@ -8,7 +8,6 @@ import log.UserLog;
 
 import gui.IGui;
 import network.INetwork;
-import network.MockNetwork;
 import network.Network;
 import network.UserInfo;
 import web.IWeb;
@@ -77,13 +76,13 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 		this.network.refuseOffer(localUser, remoteUser, service);
 	}
 	
-	public void makeOffer(String localUser, String remoteUser, String service) {
+	public void makeOffer(String localUser, String remoteUser, String service, Integer price) {
 		// cand un furnizor face o oferta unui anumit buyer
 		// se trimite pe network catre buyerul respectiv
 		
 		this.log.writeInfo("Make offer to " + remoteUser + " for service " + service);
-		this.gui.makeOffer(remoteUser, service);
-		this.network.makeOffer(localUser, remoteUser, service);
+		this.gui.makeOffer(remoteUser, service, price);
+		this.network.makeOffer(localUser, remoteUser, service, price);
 	}
 	
 	public void dropAuction(String localUser, String remoteUser, String service) {
@@ -118,9 +117,9 @@ public class Mediator implements IMediatorGui, IMediatorNetwork, IMediatorWeb{
 	}
 
 
-	public void sellerMadeOffer(String localUser, String remoteUser, String service) {
+	public void sellerMadeOffer(String localUser, String remoteUser, String service, Integer price) {
 		this.log.writeInfo("User " + localUser + " made offer to user " + remoteUser + " for service " + service);
-		this.gui.sellerMadeOffer(localUser, remoteUser, service);
+		this.gui.sellerMadeOffer(localUser, remoteUser, service, price);
 	}
 
 

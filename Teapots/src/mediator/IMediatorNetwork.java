@@ -7,7 +7,7 @@ import network.UserInfo;
 public interface IMediatorNetwork {
 	
 	public void userLoggedOut (String username);
-	public void sellerMadeOffer (String localUser, String remoteUser, String service);
+	public void sellerMadeOffer (String localUser, String remoteUser, String service, Integer price);
 	public void sellerDroppedAuction (String remoteUser, String service);
 	public void userActivatedService(String remoteUser, String service);
 	public void userDeactivatedService(String remoteUser, String service);

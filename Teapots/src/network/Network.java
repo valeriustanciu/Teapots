@@ -84,12 +84,14 @@ public class Network implements INetwork {
 	
 	
 	//TODO
-	public void makeOffer(String localUser, String remoteUser, String service) {
+	public void makeOffer(String localUser, String remoteUser, String service, Integer price) {
 		//cand un seller face o oferta, el notifica buyerul;
 		//acesta va primi "sellerMadeOffer" in mediator
 		ArrayList<String> args = new ArrayList<String>();
 		args.add(service);
+		args.add(price.toString());
 		
+		System.out.println("makeOffer_writeThread args: " + args);
 		Message msg = new Message(localUser, remoteUser, "makeOffer", args);
 		
 		ArrayList<UserInfo> usersInfo = mediator.getLoggedUsersFromServer();
@@ -210,9 +212,9 @@ public class Network implements INetwork {
 
 
 	@Override
-	public void sellerMadeOffer(String localUser, String remoteUser, String service) {
+	public void sellerMadeOffer(String localUser, String remoteUser, String service, Integer price) {
 		// TODO Auto-generated method stub
-		mediator.sellerMadeOffer(localUser, remoteUser, service);
+		mediator.sellerMadeOffer(localUser, remoteUser, service, price);
 	}
 
 

@@ -154,7 +154,7 @@ public class Gui extends JPanel implements IGui{
 
 				if (userType.equals("seller")) {
 					for (int i = 0; i < services.size(); i++) {
-						ArrayList<Pair<String, String>> serviceUsers = services.get(i).getList();
+						ArrayList<Pair<String, String, Integer>> serviceUsers = services.get(i).getList();
 						
 						for (int j = 0; j < serviceUsers.size(); j++) {
 							if (!serviceUsers.get(j).getStatus().equals("No offer") &&
@@ -175,7 +175,7 @@ public class Gui extends JPanel implements IGui{
 			}
 		});
 		
-		String[] columnNames = new String[]{"Service", "Status", "Users", "Progress"};
+		String[] columnNames = new String[]{"Service", "Status", "Users", "Price", "Progress"};
 		for(int i = 0; i < columnNames.length; i++) {
 			model.addColumn(columnNames[i]);
 		}
@@ -185,7 +185,7 @@ public class Gui extends JPanel implements IGui{
 		editors = new ArrayList<TableCellEditor>();
 		
 		for(int i = 0; i < userServices.size(); i++) {
-			Object[] rowParams = {userServices.get(i), "inactive", new JComboBox(), new JProgressBar(0, 10)};
+			Object[] rowParams = {userServices.get(i), "inactive", new JComboBox(), "0", new JProgressBar(0, 10)};
 			model.addRow(rowParams);
 			
 			JComboBox combo = new JComboBox();
@@ -216,7 +216,7 @@ public class Gui extends JPanel implements IGui{
 		MyTableCellRenderer customRenderer = new MyTableCellRenderer(auctionTable);
 		col.setCellRenderer(customRenderer);
 				
-		col = auctionTable.getColumnModel().getColumn(3);
+		col = auctionTable.getColumnModel().getColumn(4);
 		col.setCellRenderer(customRenderer);
 				
 		final Gui currentGui = this;
@@ -279,20 +279,10 @@ public class Gui extends JPanel implements IGui{
 		this.add(auctionScreen, BorderLayout.CENTER);
 		this.add(topPanel, BorderLayout.NORTH);
 		this.revalidate();
-		/*
-		if (this.userName.equals("andreea"))
-			this.userActivatedService("valeriu", "imprimare");
-		else {
-			ArrayList<String> users = new ArrayList<String>();
-			users.add("andreea");
-			populateServiceUserList("imprimare", users);
-		}*/
 	}
 	
-	
-	
 	// metode pe care le apeleaza mediatorul::
-	
+
 	// cand un buyer activeaza un serviciu, primeste de la server o lista
 	// cu sellerii ce furnizeaza serviciul respectiv
 	public void populateServiceUserList (String service, ArrayList<String> users) {
@@ -310,7 +300,7 @@ public class Gui extends JPanel implements IGui{
 		model.setValueAt("active", row, 1);
 		ServiceUserStatus newService = new ServiceUserStatus(service);
 		for(int i = 0; i < users.size(); i++) {
-			newService.addUser(users.get(i), new String("No offer"));
+			newService.addUser(users.get(i), new String("No offer"), new Integer(0));
 		}
 		
 		this.services.add(newService);
@@ -339,6 +329,7 @@ public class Gui extends JPanel implements IGui{
 					for (int i = 0; i < services.size(); i++) {
 						if (services.get(i).getService().equals(currentService)) {
 							model.setValueAt(services.get(i).getStatus((String)comboBoxes.get(row).getSelectedItem()), row, 1);
+							model.setValueAt(services.get(i).getPrice((String)comboBoxes.get(row).getSelectedItem()), row, 3);
 							auctionTable.setModel(model);
 							break;
 						}
@@ -384,6 +375,7 @@ public class Gui extends JPanel implements IGui{
 
 				model.setValueAt(comboBox, i, 2);
 				model.setValueAt("inactive", i, 1);
+				model.setValueAt(new Integer(0), i, 3);
 				auctionTable.setModel(model);
 				
 				auctionTable.getColumn("Users").setCellEditor(new DefaultCellEditor(comboBox));
@@ -391,7 +383,7 @@ public class Gui extends JPanel implements IGui{
 		}
 	}
 	
-	public void makeOffer (String remoteUser, String service) {
+	public void makeOffer (String remoteUser, String service, Integer price) {
 		// modificam statusul lui remoteuser pt service in services
 		int index = -1;
 		int row = -1;
@@ -409,14 +401,27 @@ public class Gui extends JPanel implements IGui{
 		}
 		
 		if (row != -1 && index != -1){
+			Integer currentPrice = services.get(index).getPrice(remoteUser);
+			System.out.println("make offer: currentPrice = " + currentPrice + " newPrice = " + price);
+			if (currentPrice.equals(new Integer(0))) {
+				services.get(index).changePrice(remoteUser, price);
+				System.out.println("current price is 0");
+			}
+			else {
+				if (currentPrice.compareTo(price) == 1) {
+					services.get(index).changePrice(remoteUser, price);
+					System.out.println("current price is less than price");
+				}
+			}
 			services.get(index).changeStatus(remoteUser, new String("Offer made"));
 			model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
+			model.setValueAt(services.get(index).getPrice(remoteUser).toString(), row, 3);
 			this.auctionTable.setModel(model);
 		}
 		
 	}
 	
-	public void sellerMadeOffer (String localUser, String remoteUser, String service) {
+	public void sellerMadeOffer (String localUser, String remoteUser, String service, Integer price) {
 		int index = -1;
 		int row = -1;
 		for (int i = 0; i < services.size(); i++) {
@@ -435,29 +440,44 @@ public class Gui extends JPanel implements IGui{
 		
 		if (row != -1 && index != -1){
 			
-			if (userType.equals("buyer") && userName.equals(remoteUser))
+			if (userType.equals("buyer") && userName.equals(remoteUser)) {
 				services.get(index).changeStatus(localUser, new String("Offer made"));
-			else if (userType.equals("seller") && services.get(index).getStatus(remoteUser).equals("Offer made"))
-				services.get(index).changeStatus(remoteUser, new String("Offer exceeded"));
+				services.get(index).changePrice(localUser, price);
+			}
+			else if (userType.equals("seller") && services.get(index).getStatus(remoteUser).equals("Offer made")) {
+				if (services.get(index).getPrice(remoteUser).compareTo(price) == 1) {
+					services.get(index).changeStatus(remoteUser, new String("Offer exceeded"));
+					services.get(index).changePrice(remoteUser, price);
+				}
+			}
+			else if (userType.equals("seller") && !services.get(index).getStatus(remoteUser).equals("Offer made")) {
+				services.get(index).changePrice(remoteUser, price);
+			}
 						
 			if (model.getValueAt(row, 2) instanceof String) {
 				String value = (String)model.getValueAt(row, 2);
 				if (value != null && value.equals(localUser)) {
 					model.setValueAt(services.get(index).getStatus(localUser), row, 1);
+					model.setValueAt(services.get(index).getPrice(localUser), row, 3);
 				}
 				else {
 					if (value != null && value.equals(remoteUser)) {
 						model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
+						model.setValueAt(services.get(index).getPrice(remoteUser), row, 3);
 					}
 				}
 			}
 			else {
 				JComboBox comboBox = (JComboBox) model.getValueAt(row, 2);
-				if (comboBox.getSelectedItem() != null && comboBox.getSelectedItem().equals(localUser))
+				if (comboBox.getSelectedItem() != null && comboBox.getSelectedItem().equals(localUser)) {
 					model.setValueAt(services.get(index).getStatus(localUser), row, 1);
+					model.setValueAt(services.get(index).getPrice(localUser), row, 3);
+				}
 				else {
-					if (comboBox.getSelectedItem() != null && comboBox.getSelectedItem().equals(remoteUser))
+					if (comboBox.getSelectedItem() != null && comboBox.getSelectedItem().equals(remoteUser)) {
 						model.setValueAt(services.get(index).getStatus(remoteUser), row, 1);
+						model.setValueAt(services.get(index).getPrice(remoteUser), row, 3);
+					}
 				}
 			}
 			
@@ -690,7 +710,7 @@ public class Gui extends JPanel implements IGui{
 
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
-					JProgressBar progressBar = (JProgressBar)model.getValueAt(indx, 3);
+					JProgressBar progressBar = (JProgressBar)model.getValueAt(indx, 4);
 			        if ("progress".equals(evt.getPropertyName())) {
 			        	Integer newValue = (Integer)evt.getNewValue();
 			        	Integer minValue = (Integer)progressBar.getMinimum();
@@ -719,7 +739,7 @@ public class Gui extends JPanel implements IGui{
 			        	
 			        	//model.setValueAt(remoteUserAux, indx, 2);
 			        	progressBar.setValue((Integer)evt.getNewValue());
-			        	model.setValueAt(progressBar, r, 3);
+			        	model.setValueAt(progressBar, r, 4);
 			        	auctionTable.setModel(model);
 			        }
 				}
@@ -740,7 +760,7 @@ public class Gui extends JPanel implements IGui{
 				int j;
 				for(j = 0; j < services.size(); j++) {
 					if(services.get(j).getService().equals(service)){
-						services.get(j).addUser(remoteUser, "No offer");
+						services.get(j).addUser(remoteUser, "No offer", new Integer(0));
 						
 						JComboBox comboBox = new JComboBox();
 						
@@ -827,7 +847,7 @@ public class Gui extends JPanel implements IGui{
 				if (!model.getValueAt(i, 0).equals(services.get(j).getService()))
 					continue;
 				
-				ArrayList<Pair<String, String>> userServices = services.get(j).getList();
+				ArrayList<Pair<String, String, Integer>> userServices = services.get(j).getList();
 				
 				for (int k = 0; k < userServices.size(); k++) {
 					if (userServices.get(k).getUser().equals(username)) {

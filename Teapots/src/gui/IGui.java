@@ -21,13 +21,13 @@ public interface IGui {
 	public void removeServiceUserList (String service);
 	public void acceptOffer (String remoteUser, String service);
 	public void refuseOffer (String remoteUser, String service);
-	public void sellerMadeOffer (String localUser, String remoteUser, String service);
+	public void sellerMadeOffer (String localUser, String remoteUser, String service, Integer price);
 	public void sellerDroppedAuction (String remoteUser, String service);
 	
 	// metode pt seller
 	public void userActivatedService (String remoteUser, String service);
 	public void userDeactivatedService (String remoteUser, String service);
-	public void makeOffer (String remoteUser, String service);
+	public void makeOffer (String remoteUser, String service, Integer price);
 	public int dropAuction (String remoteUser, String service);
 	public void startTransfer (String remoteUser, String service);
 	public void buyerRefusedOffer (String remoteUser, String service);
